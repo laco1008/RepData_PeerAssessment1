@@ -54,7 +54,7 @@ totalMean <- activityData %>%
 hist(totalMean$total, breaks = 30, main = "Histogram of total number of stpes taken each day", xlab = "Total steps")
 ```
 
-![](PA1_template_files/figure-html/Histogram-1.png)<!-- -->
+![](PA1_template_files/figure-html/Histogram1-1.png)<!-- -->
     
   Calculate and report the mean and median of the total number of steps taken per day
     
@@ -89,7 +89,7 @@ activityData %>%
                 labs(title = "Time series plot", x = "5-minute intervals", y = "Average steps taken")
 ```
 
-![](PA1_template_files/figure-html/Time series plot-1.png)<!-- -->
+![](PA1_template_files/figure-html/Time_series_plot-1.png)<!-- -->
     
   Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
     
@@ -157,7 +157,7 @@ ggplot(imputeSum, aes(total)) +
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](PA1_template_files/figure-html/Histograms-1.png)<!-- -->
+![](PA1_template_files/figure-html/Histogram2-1.png)<!-- -->
 
 ```r
 print(paste("Mean without imputing:", mean(totalMean$total, na.rm = TRUE)))
@@ -218,7 +218,7 @@ wData  %>%
 ## `.groups` argument.
 ```
 
-![](PA1_template_files/figure-html/Panel plot-1.png)<!-- -->
+![](PA1_template_files/figure-html/Panel_plot-1.png)<!-- -->
 
 
 

@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Loading and preprocessing the data
 Reading data
   
-```{r Reading data}
+```{r Reading_data}
 library("tidyverse")
 
 unzip("activity.zip")
@@ -23,7 +23,7 @@ activityData <- as_tibble(activityData)
   
   Calculate the total number of steps taken per day
     
-```{r Total number of steps}
+```{r Total_number_of_steps}
 totalMean <- activityData %>%
         group_by(date) %>%
         summarize(total = sum(steps, na.rm = TRUE))
@@ -31,13 +31,13 @@ totalMean <- activityData %>%
   
   Make a histogram of the total number of steps taken each day
   
-```{r Histogram}
+```{r Histogram1}
 hist(totalMean$total, breaks = 30, main = "Histogram of total number of stpes taken each day", xlab = "Total steps")
 ```
     
   Calculate and report the mean and median of the total number of steps taken per day
     
-```{r Mean and median}
+```{r Mean_and_median}
 print(paste("Mean:", mean(totalMean$total, na.rm = TRUE)))
 print(paste("Median:", median(totalMean$total, na.rm = TRUE)))
 ```
@@ -46,7 +46,7 @@ print(paste("Median:", median(totalMean$total, na.rm = TRUE)))
   
 Make a time series plot (i.e.  of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)  
   
-```{r Time series plot}
+```{r Time_series_plot}
 activityData %>%
         group_by(interval) %>%
         summarize(average = mean(steps, na.rm = TRUE)) %>%
@@ -57,7 +57,7 @@ activityData %>%
     
   Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
     
-```{r Which 5 minute interval contains the max number of steps?}
+```{r Which_5_minute_interval_contains_the_max_number_of_steps}
 activityData %>%
         group_by(interval) %>%
         summarize(total = mean(steps, na.rm = TRUE)) %>%
@@ -68,12 +68,12 @@ activityData %>%
   
   Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)  
   
-```{r Total missing values}
+```{r Total_missing_values}
 print(paste("Total number of missing values:", sum(is.na(activityData$steps))))
 
 ```
   Devise a strategy for filling in all of the missing values in the dataset.
-```{r Filling strategy}
+```{r Filling_strategy}
 newNa <- activityData %>% 
         group_by(interval) %>%
         summarize(mean=mean(steps, na.rm = TRUE)) %>%
@@ -82,7 +82,7 @@ newNa <- activityData %>%
   
   Create a new dataset that is equal to the original dataset but with the missing data filled in.
   
-```{r New imputed dataset}
+```{r New_imputed_dataset}
 NaImputed <- merge(activityData, newNa, by = "interval")
 NaImputed[is.na(NaImputed$steps), 2] <- NaImputed[is.na(NaImputed$steps), 4]
 NaImputed <- select(NaImputed, -mean)
@@ -92,7 +92,7 @@ NaImputed <- NaImputed[with(NaImputed, order(date, interval)),]
 
 Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-```{r Histograms}
+```{r Histogram2}
 imputeSum <- NaImputed %>%
         group_by(date) %>%
         summarize(total = sum(steps))
@@ -112,13 +112,13 @@ print(paste("Median with imputing:", median(imputeSum$total)))
 
 Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
   
-```{r NEw factor variable}
+```{r New_factor_variable}
 wData <- mutate(NaImputed, weekpart = ifelse(wday(NaImputed$date, week_start = 1) %in% c(6,7), "weekend", "weekday"))
 ```
 
 Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
   
-```{r Panel plot}
+```{r Panel_plot}
 wData  %>% 
         group_by(weekpart, interval) %>%
         summarize(average = mean(steps)) %>%
